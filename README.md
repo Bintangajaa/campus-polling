@@ -62,4 +62,4 @@ docker compose up -d
 ## Video Demo
 (tempel tautan video 5-8 menit)
 
-wow
+wow weew
