@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh '''
                     for i in 1 2 3 4 5 6 7 8 9 10; do
-                      if docker compose exec -T frontend wget -qO- http://localhost/api/votes > /dev/null 2>&1; then
+                      if docker compose exec -T frontend wget -qO- http://127.0.0.1/api/votes > /dev/null 2>&1; then
                         echo "Health check OK (Nginx -> Backend)"; exit 0
                       fi
                       echo "Menunggu service siap ($i/10)..."; sleep 3
