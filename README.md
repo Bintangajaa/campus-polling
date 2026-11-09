@@ -9,6 +9,7 @@
 | (Habib Abdurrahman) | (101012580024) |
 | (Ghania Fitriasy Syifa) | (101012580015) |
 | (Renizar Wendari) | (101012500073) |
+yaa saya itu
 
 ## Deskripsi
 Aplikasi voting sederhana (Opsi A vs B) dengan Backend Python REST API, Frontend HTML + Vanilla JS di Nginx,
