@@ -5,9 +5,10 @@
 
 | Nama | NIM |
 |------|-----|
-| (isi) | (isi) |
-| (isi) | (isi) |
-| (isi) | (isi) |
+| (Bagus Bintang Fauzi) | (101012580026) |
+| (Habib Abdurrahman) | (101012580024) |
+| (Ghania Fitriasy Syifa) | (101012580015) |
+| (Renizar Wendari) | (101012500073) |
 
 ## Deskripsi
 Aplikasi voting sederhana (Opsi A vs B) dengan Backend Python REST API, Frontend HTML + Vanilla JS di Nginx,
@@ -62,4 +63,4 @@ docker compose up -d
 ## Video Demo
 (tempel tautan video 5-8 menit)
 
-wow weew
+wow weew wiw
