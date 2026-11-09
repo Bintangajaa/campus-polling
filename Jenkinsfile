@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { node { label ''; customWorkspace '/c/jenkins-ws/campus-polling' } }
     options { timestamps() }
     triggers { githubPush() }
 
