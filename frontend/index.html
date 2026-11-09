@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Polling System</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:640px;margin:2rem auto;padding:0 1rem;color:#222}
+  h1{margin-bottom:.2rem} .sub{color:#666;margin-top:0}
+  .buttons{display:flex;gap:1rem;margin:1.5rem 0}
+  button{cursor:pointer;border:0;border-radius:8px;padding:.8rem 1.2rem;font-size:1rem}
+  .vote{flex:1;background:#2563eb;color:#fff} .vote.b{background:#16a34a}
+  .del{background:#dc2626;color:#fff;padding:.3rem .7rem;font-size:.85rem}
+  .bar{background:#e5e7eb;border-radius:6px;overflow:hidden;margin:.3rem 0 1rem}
+  .fill{height:26px;background:#2563eb;color:#fff;font-size:.85rem;line-height:26px;padding-left:8px;white-space:nowrap;transition:width .4s}
+  .fill.b{background:#16a34a}
+  ul{list-style:none;padding:0} li{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid #eee}
+  #msg{color:#dc2626;min-height:1.2rem}
+</style>
+</head>
+<body>
+<h1>Campus Polling System</h1>
+<p class="sub">Pilih opsi favoritmu. Total suara: <b id="total">0</b></p>
+
+<div class="buttons">
+  <button class="vote" onclick="sendVote('A')">Vote Opsi A</button>
+  <button class="vote b" onclick="sendVote('B')">Vote Opsi B</button>
+</div>
+<div id="msg"></div>
+
+<div>Opsi A <div class="bar"><div class="fill" id="barA" style="width:0">0</div></div></div>
+<div>Opsi B <div class="bar"><div class="fill b" id="barB" style="width:0">0</div></div></div>
+
+<h3>Catatan Suara</h3>
+<ul id="list"></ul>
+
+<script>
+   const API = location.port === '5000' || location.protocol === 'file:' ? 'http://localhost:5000/votes' : '/api/votes';
+const $ = id => document.getElementById(id);
+
+async function loadVotes() {
+  try {
+    const res = await fetch(API);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    render(await res.json());
+    $('msg').textContent = '';
+  } catch (e) { $('msg').textContent = 'Gagal memuat data: ' + e.message; }
+}
+
+function render(d) {
+  $('total').textContent = d.total;
+  for (const o of ['A', 'B']) {
+    const n = d.results[o], pct = d.total ? Math.round(n / d.total * 100) : 0;
+    $('bar' + o).style.width = Math.max(pct, 8) + '%';
+    $('bar' + o).textContent = n + ' suara (' + pct + '%)';
+  }
+  const ul = $('list'); ul.replaceChildren();
+  d.votes.slice().reverse().forEach(v => {
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    span.textContent = '#' + v.index + ' - Opsi ' + v.option + ' (' + v.time + ')';
+    const btn = document.createElement('button');
+    btn.className = 'del'; btn.textContent = 'Hapus';
+    btn.onclick = () => deleteVote(v.index);
+    li.append(span, btn); ul.append(li);
+  });
+}
+
+async function sendVote(option) {
+  const res = await fetch(API, {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({option})
+  });
+  if (!res.ok) { $('msg').textContent = (await res.json()).error; return; }
+  loadVotes();
+}
+
+async function deleteVote(index) {
+  const res = await fetch(API + '?index=' + index, {method: 'DELETE'});
+  if (!res.ok) { $('msg').textContent = (await res.json()).error; return; }
+  loadVotes();
+}
+
+loadVotes();
+setInterval(loadVotes, 3000);   // update otomatis tanpa refresh
+</script>
+</body>
+</html>
