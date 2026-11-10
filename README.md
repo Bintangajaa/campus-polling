@@ -385,3 +385,5 @@ Campus Polling System berhasil diimplementasikan sebagai aplikasi web berbasis c
 Docker Compose digunakan untuk mengelola layanan, Custom Bridge Network untuk komunikasi antar-container, Named Volume untuk menjaga persistensi data, serta Bind Mount untuk memudahkan perubahan file frontend.
 
 Integrasi GitHub Webhook dengan Jenkins menjalankan lima tahapan CI/CD secara otomatis hingga Health Check berhasil.
+
+:D
